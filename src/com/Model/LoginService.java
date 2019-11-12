@@ -34,7 +34,7 @@ public class LoginService implements com.Interface.Command {
 				//JSP는 내장객체로 session이 존재하지만
 				//Servlet은 내장객체가 없음으로 session객체를 생성해줘야함
 				session.setAttribute("u_do", u_do);		
-				nextpage = "index.jsp";
+				nextpage = "User_main.jsp";
 				
 			}else {
 				System.out.println("로그인실패");

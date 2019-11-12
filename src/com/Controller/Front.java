@@ -41,8 +41,10 @@ public class Front extends HttpServlet {
 		
 		String nextpage = "";
 	
-    
-		if (front.equals("login_driver.do")) {
+		if (front.equals("login.do")) {
+			LoginService login = new LoginService();
+			nextpage = login.execute(request,response);	
+		}else if (front.equals("login_driver.do")) {
 			LoginService_driver login = new LoginService_driver();
 			nextpage = login.execute(request,response);	
 		}else if (front.equals("login_enter.do")) {

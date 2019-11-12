@@ -44,7 +44,11 @@ table, tr, th, td{vertical-align: bottom;}
 
 <% 
 
-String u_id = "user2"; //아이디를 받아왔다고 가정 
+userDO u_do = (userDO)session.getAttribute("u_do");
+String u_id = u_do.getU_id();
+driverDO d_do = (driverDO)session.getAttribute("d_do");
+enterpriseDO e_do = (enterpriseDO)session.getAttribute("e_do");
+
 int b_num = 5;   //교촌치킨을 받아왔다고 가정
 
 String bname =memberDAO.getBusiness(b_num); 
@@ -63,12 +67,6 @@ System.out.println(arr[2]);
 
 
     %>
-
-<% 
-	userDO u_do = (userDO)session.getAttribute("u_do");
-	driverDO d_do = (driverDO)session.getAttribute("d_do");
-	enterpriseDO e_do = (enterpriseDO)session.getAttribute("e_do");
- %>
 
 	<!-- Wrapper -->
 	<div id="wrapper">
@@ -286,7 +284,7 @@ registration.showNotification(title, options);
 						<h2>Menu</h2>
 					</header>
 					<ul>
-						<li><a href="User_usageDetails.jsp?u_id=<%= u_id %>" >이용내역</a></li>
+						<li><a href="User_usageDetails.jsp" >이용내역</a></li>
 						<li><a href="review_user.jsp">내가 작성한 리뷰</a></li>
 						<!-- 환경설정 구현 안함-->
 

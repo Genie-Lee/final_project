@@ -4,6 +4,7 @@
 <%@page import="com.DataAccessObject.memberDAO"%>
 <%@page import="com.DataObject.UserUsageDO"%>
 <%@ page import="java.util.*"%>
+<%@page import="com.DataObject.userDO"%>
 
 
 <!DOCTYPE html>
@@ -29,7 +30,8 @@
 
 <%
    
- String u_id = request.getParameter("u_id");  // 확인
+userDO u_do = (userDO)session.getAttribute("u_do");
+String u_id = u_do.getU_id();
  
  
  %> 

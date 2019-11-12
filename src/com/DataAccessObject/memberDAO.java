@@ -179,7 +179,43 @@ return answer;
 		}
 		return usage_arr;
 	}
-
+	
+	public userDO Login(String u_id, String u_pw) {
+		userDO u_do = null;
+		
+		try {
+			getConnection();
+			
+			String sql="select * from user_t where u_id = ? and u_pw = ?";
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			
+			psmt.setString(1, u_id);
+			psmt.setString(2, u_pw);
+			
+			ResultSet rs = psmt.executeQuery();
+			//executeUpdate : insert / update / delete 
+			//Return : int(sql문 성공횟수)
+			
+			//executeQuery : select
+			//Return : ResultSet(검색한 데이터)
+			if(rs.next()) {
+				//if : 검색한 데이터가 하나일 경우
+				//while : 검색한 데이터가 여러개 일경우
+				String get_u_id = rs.getString(1);
+				String get_u_pw = rs.getString(2);
+				String get_u_name = rs.getString(3);
+				String get_u_num = rs.getString(4);
+				
+				u_do = new userDO(get_u_id, get_u_pw, get_u_name, get_u_num);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return u_do;
+	}
+	
 	public driverDO Login_driver(String d_id, String d_pw) {
 		driverDO d_do = null;
 		
@@ -288,7 +324,7 @@ return answer;
 			psmt.setString(1, u_do.getU_id());
 			psmt.setString(2, u_do.getU_pw());
 			psmt.setString(3, u_do.getU_name());
-			psmt.setInt(4, u_do.getU_num());
+			psmt.setString(4, u_do.getU_num());
 			
 			cnt = psmt.executeUpdate();	
 			

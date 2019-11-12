@@ -74,12 +74,30 @@
 												<article>
 
 													    <input id="tab1" type="radio" name="tabs" checked>
-													    <label for="tab1">드라이버 로그인</label>
+													    <label for="tab1">일반 이용자 로그인</label>
+													    
+													    <input id="tab2" type="radio" name="tabs" >
+													    <label for="tab2">드라이버 로그인</label>
 													
-													    <input id="tab2" type="radio" name="tabs">
-													    <label for="tab2">업체 로그인</label>
+													    <input id="tab3" type="radio" name="tabs">
+													    <label for="tab3">업체 로그인</label>
 													    
 													    <section id="content1">
+													    
+													        <form action="login.do" method="post">
+																<ul class="actions">
+																	<li><input type="text" name="u_id" value="user2" readonly style=" width: 0; height: 0; border:0"></li>
+																</ul>
+																<ul class="actions">
+																	<li><input type="password" name="u_pw" value="2" readonly style=" width: 0; height: 0; border:0"></li>
+																</ul>
+																<ul class="actions">
+																	<li><input type="submit" value="login" class="button fit" style="text-align:center; width:313px; height:50px;"></li>
+																</ul>
+															</form>
+													    </section>
+													    
+													    <section id="content2">
 													
 													        <form action="login_driver.do" method="post">
 																<ul class="actions">
@@ -94,7 +112,7 @@
 															</form>
 													    </section>
 													
-													    <section id="content2">
+													    <section id="content3">
 													        <form action="login_enter.do" method="post">
 																<ul class="actions">
 																	<li><input type="text" name="e_id" placeholder="E_ID를 입력하세요" style="text-align:center; width:313px; height:50px;"></li>
