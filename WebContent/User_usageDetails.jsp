@@ -68,7 +68,8 @@
                                           </ul>
                                           
                                           <ul class="actions">
-                                             <li>기사님 : <%= usage_arr.get(i).getD_name()%> </li>
+                                          	<%String d_name = usage_arr.get(i).getD_name(); %>
+                                             <li>기사님 : <%=d_name %> </li>
                                           </ul>
                                           
                                           <ul class="actions">
@@ -79,13 +80,14 @@
                                           </ul>
                                           
                                           <ul class="actions">
-                                             <li>주문번호 : <%= usage_arr.get(i).getOrder_num()%> </li>
+                                          	<%int order_num = usage_arr.get(i).getOrder_num(); %>
+                                             <li>주문번호 : <%=order_num %> </li>
                                           </ul>
                                           
                            
                                <ul class="actions">
                                           <!--3.href로 리뷰작성 페이지로 연결하기-->
-                                             <li><a href="review.jsp?d_name = <%=usage_arr.get(i).getD_name() %>" class="button">리뷰작성</a></li>
+                                             <li><a href="review.jsp?order_num=<%=order_num %>" class="button">리뷰작성</a></li>
                                             <!--  드라이버 이름으로 확인--> 
                                           
                                           </ul>  

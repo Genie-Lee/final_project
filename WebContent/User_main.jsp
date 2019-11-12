@@ -44,8 +44,8 @@ table, tr, th, td{vertical-align: bottom;}
 
 <% 
 
-String u_id = "1"; //아이디를 받아왔다고 가정 
-int b_num = 1;   //교촌치킨을 받아왔다고 가정
+String u_id = "user2"; //아이디를 받아왔다고 가정 
+int b_num = 5;   //교촌치킨을 받아왔다고 가정
 
 String bname =memberDAO.getBusiness(b_num); 
 

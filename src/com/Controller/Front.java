@@ -17,6 +17,7 @@ import com.Model.LoginService_driver;
 import com.Model.LoginService_enter;
 import com.Model.LogoutSurvice_driver;
 import com.Model.LogoutSurvice_enter;
+import com.Model.ReviewRegistration;
 
 /**
  * Servlet implementation class front
@@ -59,6 +60,9 @@ public class Front extends HttpServlet {
 		}else if(front.equals("LogoutCon_enter.do")) {
 			LogoutSurvice_enter logout = new LogoutSurvice_enter();
 			nextpage = logout.execute(request, response);
+		}else if(front.equals("ReviewRegistrationCon.do")) {
+			ReviewRegistration review = new ReviewRegistration();
+			nextpage = review.execute(request, response);
 		}
 
     

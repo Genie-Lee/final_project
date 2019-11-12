@@ -8,15 +8,17 @@ public class UserUsageDO {
 	private String d_name;
 	private String b_name;
 	private String date;
+	private String photo;
 	
 	
-	public UserUsageDO(int order_num, String d_name, String b_name, String date) {
+	public UserUsageDO(int order_num, String d_name, String b_name, String date, String photo) {
 	
 		super() ;
 this.order_num = order_num ; 
 this.d_name = d_name; 
 this.b_name = b_name ; 
 this.date = date ; 
+this.photo = photo ; 
 		 
 		
 	}
@@ -46,7 +48,14 @@ this.date = date ;
 	}
 	public void setDate(String date) {
 		this.date = date;
-	} 
+	}
+	
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
 	
 	
 	

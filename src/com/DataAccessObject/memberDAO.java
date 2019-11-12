@@ -168,7 +168,7 @@ return answer;
 				String b_name = rs.getString(3);
 				int order_num = rs.getInt(4);
 				
-				usage = new UserUsageDO(order_num , d_name , b_name , date);
+				usage = new UserUsageDO(order_num , d_name , b_name , date, null);
 				usage_arr.add(usage);
 				
 				
@@ -422,33 +422,8 @@ return answer;
 		}
 	}
 
-	public int reviewInsert(reviewDO vo) {
-		int cnt = 0;
-		
-		try {
-			
-			getConnection();
-
-			String sql = "insert into review values(?,?,?,?,?,?,?)";
-
-			psmt = conn.prepareStatement(sql);
-		
-			psmt.setInt(1, vo.getPost_num());
-			psmt.setString(2, vo.getU_id());
-			psmt.setInt(3, vo.getOrder_num());
-			psmt.setInt(4, vo.getR_date());
-			psmt.setFloat(5, vo.getStar_rate());
-			psmt.setString(6, vo.getPost());
-			
-			cnt = psmt.executeUpdate();
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return cnt;
-	} 
 	
-	public ArrayList<reviewDO> get_review_driver(String d_id) {
+	public ArrayList<reviewDO> get_review_driver(String d_id) { // 드라이버가 보는 리뷰
 		System.out.println(d_id);
 		reviewDO r_do = null;
 		ArrayList<reviewDO> r_arr = new ArrayList<>();
@@ -466,7 +441,7 @@ return answer;
 			
 			while(rs.next()) {
 				
-				int star_rate = rs.getInt(1);
+				String star_rate = rs.getString(1);
 				String post = rs.getString(2);
 				
 				r_do = new reviewDO(star_rate, post); 
@@ -480,6 +455,100 @@ return answer;
 		return r_arr;
 	}
 
+	public ArrayList<UserUsageDO> review_page(String order){ // 리뷰페이지 정보 표시
+		System.out.println("주문번호 : "+order);
+		UserUsageDO u_u_do = null;
+		ArrayList<UserUsageDO> u_u_arr = new ArrayList<>();
+		
+		try {
+			getConnection();
+			
+			String sql = "select d.d_name, order_date, d.photo from (select order_date, d_id from order_t where order_num = ?) o, driver d where o.d_id = d.d_id";
+			//텍스트 마이닝 정보 없음
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			
+			psmt.setString(1, order);
+			
+			ResultSet rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				String d_name = rs.getString(1);
+				String date = rs.getString(2);
+				String photo = rs.getString(3);
+				
+				u_u_do = new UserUsageDO(0, d_name, null, date, photo);
+				u_u_arr.add(u_u_do);
+				
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return u_u_arr;
+	}
+	
+	
+
+
+	public String get_u_id(String order_num) { // u_id 가져오기
+		String answer = ""; 
+		System.out.println("아이디 긁어올 번호 : "+order_num);
+
+		try {
+					
+					getConnection();
+					
+					String sql =  "select u_id from order_t where order_num = ?";
+					
+					PreparedStatement psmt = conn.prepareStatement(sql); 
+					System.out.println(order_num);
+					psmt.setString(1, order_num);
+					
+					ResultSet rs = psmt.executeQuery(); 
+					
+					if(rs.next()) {	
+					answer = rs.getString(1); 	
+					}
+					
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+		return answer; 
+	}
+	
+	public int reviewInsert(reviewDO r_do) {
+		int cnt = 0;
+		
+		String order_num = r_do.getOrder_num();
+		String u_id = get_u_id(order_num);
+		System.out.println("U_ID : "+u_id);
+		System.out.println("별점"+r_do.getStar_rate());
+		try {
+			
+			getConnection();
+
+			String sql = "insert into review values (review_seq.nextval, ?, ?, ?, ?, sysdate)";
+
+			
+			psmt = conn.prepareStatement(sql);
+		
+			psmt.setString(1, u_id);
+			psmt.setString(2, r_do.getOrder_num());
+			psmt.setString(3, r_do.getStar_rate());
+			psmt.setString(4, r_do.getPost());
+			
+			cnt = psmt.executeUpdate();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	} 
+
+	
+	// 보류 합니다.
 	
 public ArrayList<reviewDO> userMyReview() {
 	reviewDO vo = null;
@@ -516,10 +585,6 @@ public ArrayList<reviewDO> userMyReview() {
 	return arr;
 }
 
-
-
-
-// 보류 합니다.
 public ArrayList<driverDO> driverManagement() {
 	driverDO vo = null;
 	ArrayList<driverDO> arr = new ArrayList<>();

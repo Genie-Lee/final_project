@@ -1,4 +1,6 @@
 <%@page import="com.DataAccessObject.memberDAO"%>
+<%@page import="com.DataObject.UserUsageDO"%>
+<%@ page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 
@@ -54,16 +56,11 @@ table, tr, th, td{vertical-align: bottom;}
 
 <body class="is-preload">
 	<%
-		String u_id = "1"; //아이디를 받아왔다고 가정 
-		int b_num = 1;   //교촌치킨을 받아왔다고 가정
-	
-		String bname =memberDAO.getBusiness(b_num); 
-	
-		String orderName = memberDAO.getDriver(u_id , b_num); 
-	
-		String arr[] = orderName.split("&"); 
-	
-		int star_avg = memberDAO.getStar(arr[0]); 
+	String order_num = request.getParameter("order_num");
+	memberDAO dao = new memberDAO();
+	ArrayList<UserUsageDO> u_arr = dao.review_page(order_num);
+	String date = u_arr.get(0).getDate(); 
+	String date_arr[] = date.split(" ");
 	%>
 
 	<!-- Wrapper -->
@@ -83,52 +80,45 @@ table, tr, th, td{vertical-align: bottom;}
 				<section>									
 					<div class="post">
 						<article>
-							<form action="ReviewRegistrationCon" method="post">
-							<%
-								String d_name = (String)session.getAttribute("d_name");
-								String d_date = (String)session.getAttribute("d_date");
-								String photo = (String)session.getAttribute("photo");
-							%>
-							
+							<form action="ReviewRegistrationCon.do" method="post">
 								<table style="border-collapse: inherit; ">
-									<tr style="background-color: transparent; ">
+									<tr style="background-color: transparent; ">									
 										<td rowspan="2" width="100" height="120"><!-- 가능하면 사진의 크기와 동일하게 설정-->
-											<%//if(profile==null){ %>
+											<%if(u_arr.get(0).getPhoto()==null){ %>
 											<!-- DB에서 사진을 받아와 표시, null값 일경우 디폴트 프로필 표시 -->
-											<span class="image"><img src="images/profile.png"
-												width="100" height="120" alt="프로필"></span>
-											<%//}else{%>
-											<!--class="image"><img src=""width="100" height="120" alt="프로필"> 기사님사진 받을 곳 -->
-											<%//}%>
+											<span class="image"><img src="images/profile.png" width="100" height="120" alt="프로필"></span>
+											<%}else{%>
+											<span class="image"><img src="images/<%=u_arr.get(0).getPhoto() %>"width="100" height="120" alt="프로필"></span>
+											<%}%>
 										</td>
-										<td><%// d_name %>기사님</td><!-- 기사님 성함을 받아와 표시할 곳 -->
+										<td><%=u_arr.get(0).getD_name() %>기사님</td><!-- 기사님 성함을 받아와 표시할 곳 -->
 									</tr>
 									<tr>
-										<td>날짜 : <%//d_date %></td><!-- 날짜 받아와 표시 -->
+										<td>날짜 : <%=date_arr[0] %></td><!-- 날짜 받아와 표시 -->
 									</tr>	
 									<tr style="background-color: transparent;">
 										<td colspan="2">
 										<span class="star-input">
 											<span class="input">
-												<input type="radio" name="star-input" value="0.5" id="p0.5">
+												<input type="radio" name="star-input" value="10" id="p0.5">
 										    	<label for="p0.5">0.5</label>
-										    	<input type="radio" name="star-input" value="1" id="p1">
+										    	<input type="radio" name="star-input" value="20" id="p1">
 										    	<label for="p1">1</label>
-										    	<input type="radio" name="star-input" value="1.5" id="p1.5">
+										    	<input type="radio" name="star-input" value="30" id="p1.5">
 										    	<label for="p1.5">1.5</label>
-										    	<input type="radio" name="star-input" value="2" id="p2">
+										    	<input type="radio" name="star-input" value="40" id="p2">
 										    	<label for="p2">2</label>
-										    	<input type="radio" name="star-input" value="2.5" id="p2.5">
+										    	<input type="radio" name="star-input" value="50" id="p2.5">
 										    	<label for="p2.5">2.5</label>
-										    	<input type="radio" name="star-input" value="3" id="p3">
+										    	<input type="radio" name="star-input" value="60" id="p3">
 										    	<label for="p3">3</label>
-										    	<input type="radio" name="star-input" value="3.5" id="p3.5">
+										    	<input type="radio" name="star-input" value="70" id="p3.5">
 										    	<label for="p3.5">3.5</label>
-										    	<input type="radio" name="star-input" value="4" id="p4">
+										    	<input type="radio" name="star-input" value="80" id="p4">
 										    	<label for="p4">4</label>
-										    	<input type="radio" name="star-input" value="4.5" id="p4.5">
+										    	<input type="radio" name="star-input" value="90" id="p4.5">
 										    	<label for="p4.5">4.5</label>
-										    	<input type="radio" name="star-input" value="5" id="p5">
+										    	<input type="radio" name="star-input" value="100" id="p5">
 										    	<label for="p5">5</label>
 										  	</span>
 
@@ -139,6 +129,7 @@ table, tr, th, td{vertical-align: bottom;}
 									<tr>
 										<td colspan="2">
 											<textarea name="post" rows="5" cols="auto"></textarea>
+											<input type="text" name="order_num" value="<%=order_num %>" readonly style=" width: 0; height: 0; border:0">
 										</td>
 									</tr>
 									<tr style="background-color: transparent;">
