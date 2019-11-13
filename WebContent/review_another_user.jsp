@@ -53,8 +53,7 @@ userDO u_do = (userDO)session.getAttribute("u_do");
 orderDO o_do = (orderDO)session.getAttribute("o_do");
 String u_id = u_do.getU_id();
 memberDAO dao = new memberDAO();
-int p = 1;
-ArrayList<review_viewerDO> rv_arr;
+ArrayList<review_viewerDO> rv_arr= dao.another_user_review(o_do.getD_id());
  %> 
 <!-- Wrapper -->
 	<div id="wrapper">
@@ -71,23 +70,9 @@ ArrayList<review_viewerDO> rv_arr;
 									<div class="menu">
 										<article>																		
 		                                      <!--2.for문 사용- 내가 작성한 리뷰 받아와야함-->
-		                                   		<%
-		                                   		rv_arr= dao.another_user_review(o_do.getD_id(),p);
-		                                   		p++;
-		                                   		for(int i=0; i<rv_arr.size(); i++){%>
-		                                      	<table style="border-collapse: inherit;">
-													<tr style="background-color: transparent; ">
-														<td rowspan="2" width="100" height="120"><!-- 가능하면 사진의 크기와 동일하게 설정-->
-															<%if(rv_arr.get(i).getPhoto()==null){ %>
-															<!-- DB에서 사진을 받아와 표시, null값 일경우 디폴트 프로필 표시 -->
-															<span class="image"><img src="images/profile.png" width="100" height="120" alt="프로필"></span>
-															<%}else{%>
-															<span class="image"><img src="images/<%=rv_arr.get(0).getPhoto() %>"width="100" height="120" alt="프로필"></span>
-															<%}%>
-														</td>
-														<td><%=rv_arr.get(i).getD_name() %>기사님</td><!-- 기사님 성함을 받아와 표시할 곳 -->
-														<td><% %><!-- 우수, 신입 등등 표시할 부분 --></td>
-													</tr>
+		                                   		<a style="font-size:20px;"><%=rv_arr.get(0).getD_name() %>기사님</a>
+		                                   		<%for(int i=0; i<rv_arr.size(); i++){%>
+		                                      	<table style="border-collapse: inherit;padding:10px;">
 													<tr>
 														<%String date[] = rv_arr.get(i).getR_date().split(" "); %>
 														<td>날짜 <%=date[0]%></td>

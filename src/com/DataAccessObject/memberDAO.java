@@ -261,7 +261,7 @@ return answer;
 		try {
 			getConnection();
 			
-			String sql="select * from user_t where u_id = ? and u_pw = ?";
+			String sql="select * from (select u.u_id, u.u_pw, u.u_name, u.u_p_number from(select u.rnum, u.u_id, u.u_pw, u.u_name, u.u_p_number from (select rownum as rnum, u_id, u_pw, u_name, u_p_number from user_t) u where rownum <=10) u where rnum >= 1) where u_id = ? and u_pw = ?";
 			PreparedStatement psmt = conn.prepareStatement(sql);
 			
 			psmt.setString(1, u_id);
@@ -701,7 +701,7 @@ return answer;
 	
 		getConnection();
 	
-		String sql = "select r.d_name, r.photo, r.r_date, r.star_rate, r.post from (select rownum as rnum, r.d_name, r.photo, r.r_date, r.star_rate, r.post from (select d.d_name, d.photo, r.r_date, r.star_rate, r.post, r.post_num from review r, (select d.d_id, d.photo, d.d_name, o.u_id from driver d, (select d_id, u_id from order_t where order_num in (select order_num from review where d_id = ?)) o where d.d_id = o.d_id) d where r.u_id = d.u_id order by r_date desc) r where rownum <=?) r where r.rnum >= ?";
+		String sql = "select r.d_name, r.photo, r.r_date, r.star_rate, r.post from (select rownum as rnum, r.d_name, r.photo, r.r_date, r.star_rate, r.post from (select d.d_name, d.photo, r.r_date, r.star_rate, r.post, r.post_num from review r, (select d.d_id, d.photo, d.d_name, o.u_id from driver d, (select d_id, u_id from order_t where order_num in (select order_num from review where d_id = ?)) o where d.d_id = o.d_id) d where r.u_id = d.u_id order by r_date desc) r where rownum <=20) r where r.rnum >= 1";
 		//"select D_NAME,PHOTO from ORDER_T where ORDER_NUM=?";
 		
 		PreparedStatement psmt = conn.prepareStatement(sql); 
