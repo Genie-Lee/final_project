@@ -301,19 +301,9 @@ registration.showNotification(title, options);
 						<h2>Menu</h2>
 					</header>
 					<ul>
+						<li><a href="User_main.jsp" >메인</a></li>
 						<li><a href="User_usageDetails.jsp" >이용내역</a></li>
 						<li><a href="review_user.jsp">내가 작성한 리뷰</a></li>
-						<!-- 환경설정 구현 안함-->
-
-						<!-- <li>
-											<span class="opener">Submenu</span>
-											<ul>
-												<li><a href="#">Lorem Dolor</a></li>
-												<li><a href="#">Ipsum Adipiscing</a></li>
-												<li><a href="#">Tempus Magna</a></li>
-												<li><a href="#">Feugiat Veroeros</a></li>
-
-											</ul> 참고용으로 남겨둠-->
 
 					</ul>
 				</nav>

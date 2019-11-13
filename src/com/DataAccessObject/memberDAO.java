@@ -149,6 +149,35 @@ return answer;
 	
 	//user_usageDetails 을 얻기 위한 order_num , d_name , b_name , date  
 	
+	public ArrayList<reviewDO> get_review(String u_id) { // 리뷰가 있는지 확인용
+		reviewDO r_do = null;
+		ArrayList<reviewDO> r_arr = new ArrayList<>();
+		try {
+			getConnection();
+			String sql="select order_num from review where u_id = ? order by order_num desc";
+			
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			
+			psmt.setString(1, u_id);
+			
+			ResultSet rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				String order_num = rs.getString(1);
+				
+				r_do = new reviewDO(null, order_num, null, null);
+				r_arr.add(r_do);
+				
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return r_arr;
+	}
+	
 	public ArrayList<UserUsageDO> getUserUsage(String u_id) {
 		
 		UserUsageDO usage = null;
@@ -158,7 +187,7 @@ return answer;
 		try {
 			getConnection();
 			System.out.println(u_id);
-			String sql="select o.order_date, d.d_name, o.b_name, o.order_num from (select o.order_date, o.d_id, b.b_name, o.order_num , o.u_id from order_t o, (select b_name, b_num from business) b where o.b_num = b.b_num) o, (select o.order_date, d.d_name, o.order_num from order_t o, (select d_name, d_id from driver) d where o.d_id = d.d_id) d where o.order_num = d.order_num and o.u_id = ?";
+			String sql="select o.order_date, d.d_name, o.b_name, o.order_num from (select o.order_date, o.d_id, b.b_name, o.order_num , o.u_id from order_t o, (select b_name, b_num from business) b where o.b_num = b.b_num) o, (select o.order_date, d.d_name, o.order_num from order_t o, (select d_name, d_id from driver) d where o.d_id = d.d_id) d where o.order_num = d.order_num and o.u_id = ? order by o.order_num desc";
 			
 			PreparedStatement psmt = conn.prepareStatement(sql);
 			
@@ -689,13 +718,12 @@ return answer;
 		return rv_arr;
 	}
 
-	public ArrayList<review_viewerDO> another_user_review(String d_id, int page) {
+	public ArrayList<review_viewerDO> another_user_review(String d_id) {
 		
 		System.out.println("드라이버 아이디"+d_id);
 		review_viewerDO rv_do = null;
 		ArrayList<review_viewerDO> rv_arr = new ArrayList<>();
 		
-		page*=10;
 		
 		try {
 	
@@ -706,8 +734,7 @@ return answer;
 		
 		PreparedStatement psmt = conn.prepareStatement(sql); 
 		psmt.setString(1, d_id);
-		psmt.setInt(2, page);
-		psmt.setInt(3, (page-9));
+
 		
 		ResultSet rs = psmt.executeQuery(); 
 		

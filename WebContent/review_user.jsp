@@ -77,7 +77,7 @@ ArrayList<review_viewerDO> rv_arr = dao.userMyReview(u_id);
 															<!-- DB에서 사진을 받아와 표시, null값 일경우 디폴트 프로필 표시 -->
 															<span class="image"><img src="images/profile.png" width="100" height="120" alt="프로필"></span>
 															<%}else{%>
-															<span class="image"><img src="images/<%=rv_arr.get(0).getPhoto() %>"width="100" height="120" alt="프로필"></span>
+															<span class="image"><img src="images/<%=rv_arr.get(i).getPhoto() %>"width="100" height="120" alt="프로필"></span>
 															<%}%>
 														</td>
 														<td><%=rv_arr.get(i).getD_name() %>기사님</td><!-- 기사님 성함을 받아와 표시할 곳 -->
@@ -111,45 +111,55 @@ ArrayList<review_viewerDO> rv_arr = dao.userMyReview(u_id);
 					</div>
 
 				<!-- Sidebar -->
-					<div id="sidebar">
-						<div class="inner">
-							<!-- Menu -->
-								<nav id="menu">
-									<header class="major">
-										<h2>Menu</h2>
-									</header>
-									<ul>
-										<li><a href="User_main.jsp">메인</a></li>
-										<li><a href="User_usageDetails.jsp">이용내역</a></li>
-										<li><a href="review_user.jsp">내가 작성한 리뷰</a></li>
-										<!-- 환경설정 구현예정 -->
-										<!-- <li>
-									</ul>
-								</nav>
-								
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Get in touch</h2>
-									</header>
-									<p>문제 발생시 다음 연락처로 연락 바랍니다.</p>
-									<ul class="contact">
-										<li class="icon solid fa-envelope"><a href="#">genie141930@gmail.com</a></li>
-										<li class="icon solid fa-phone">(010) 5091-0984</li>
-										<li class="icon solid fa-home">광주광역시 북구 용봉동 77<br />
-										전남대학교 생활관 9A동</li>
-									</ul>
-								</section>
+		<div id="sidebar">
+			<div class="inner">
 
-							<!-- Footer -->
-								<footer id="footer">
-									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-								</footer>
+				<!-- Search 검색기능 일단 무시하기로 합니다-->
 
-						</div>
-					</div>
+				<!-- <section id="search" class="alt">
+									<form method="post" action="#">
+										<input type="text" name="query" id="query" placeholder="Search" />
+									</form>
+								</section> -->
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="User_main.jsp" >메인</a></li>
+						<li><a href="User_usageDetails.jsp" >이용내역</a></li>
+						<li><a href="review_user.jsp">내가 작성한 리뷰</a></li>
 
+					</ul>
+				</nav>
+				<!-- Section -->
+				<section>
+					<header class="major">
+						<h2>Get in touch</h2>
+					</header>
+
+					<p>문제 발생시 다음 연락처로 연락 바랍니다.</p>
+					<ul class="contact">
+						<li class="icon solid fa-envelope"><a href="#">genie141930@gmail.com</a></li>
+						<li class="icon solid fa-phone">(010) 5091-0984</li>
+						<li class="icon solid fa-home">광주광역시 북구 용봉동 77<br /> 전남대학교
+							생활관 9A동
+
+						</li>
+					</ul>
+				</section>
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">
+						&copy; Untitled. All rights reserved. Demo Images: <a
+							href="https://unsplash.com">Unsplash</a>. Design: <a
+							href="https://html5up.net">HTML5 UP</a>.
+					</p>
+				</footer>
 			</div>
+		</div>
+	</div>
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>

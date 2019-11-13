@@ -55,54 +55,65 @@
 					</div>
 
 				<!-- Sidebar -->
-					<div id="sidebar">
-						<div class="inner">
+		<div id="sidebar">
+			<div class="inner">
 
-							<!-- Search 검색기능 일단 무시하기로 합니다-->
-								<!-- <section id="search" class="alt">
+				<!-- Search 검색기능 일단 무시하기로 합니다-->
+
+				<!-- <section id="search" class="alt">
 									<form method="post" action="#">
 										<input type="text" name="query" id="query" placeholder="Search" />
 									</form>
 								</section> -->
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="User_usageDetails.jsp" >이용내역</a></li>
+						<li><a href="review_user.jsp">내가 작성한 리뷰</a></li>
+						<!-- 환경설정 구현 안함-->
 
-							<!-- Menu -->
-								<nav id="menu">
-									<header class="major">
-										<h2>Menu</h2>
-									</header>
-									<ul>
-										<li><a href="index.html">메인</a></li>
-										<li><a href="#">로그인</a></li><!-- 로그인페이지 구현예정 -->
-										<li><a href="#">회원가입</a></li><!-- 회원가입페이지 구현예정-->
-										<li><a href="#">이용내역</a></li><!-- 이용내역 구현예정 -->
-										<!-- <li>
-											
-									</ul>
-								</nav>
-								
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Get in touch</h2>
-									</header>
-									<p>문제 발생시 다음 연락처로 연락 바랍니다.</p>
-									<ul class="contact">
-										<li class="icon solid fa-envelope"><a href="#">genie141930@gmail.com</a></li>
-										<li class="icon solid fa-phone">(010) 5091-0984</li>
-										<li class="icon solid fa-home">광주광역시 북구 용봉동 77<br />
-										전남대학교 생활관 9A동</li>
-									</ul>
-								</section>
+						<!-- <li>
+											<span class="opener">Submenu</span>
+											<ul>
+												<li><a href="#">Lorem Dolor</a></li>
+												<li><a href="#">Ipsum Adipiscing</a></li>
+												<li><a href="#">Tempus Magna</a></li>
+												<li><a href="#">Feugiat Veroeros</a></li>
 
-							<!-- Footer -->
-								<footer id="footer">
-									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-								</footer>
+											</ul> 참고용으로 남겨둠-->
 
-						</div>
-					</div>
+					</ul>
+				</nav>
+				<!-- Section -->
+				<section>
+					<header class="major">
+						<h2>Get in touch</h2>
+					</header>
 
+					<p>문제 발생시 다음 연락처로 연락 바랍니다.</p>
+					<ul class="contact">
+						<li class="icon solid fa-envelope"><a href="#">genie141930@gmail.com</a></li>
+						<li class="icon solid fa-phone">(010) 5091-0984</li>
+						<li class="icon solid fa-home">광주광역시 북구 용봉동 77<br /> 전남대학교
+							생활관 9A동
+
+						</li>
+					</ul>
+				</section>
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">
+						&copy; Untitled. All rights reserved. Demo Images: <a
+							href="https://unsplash.com">Unsplash</a>. Design: <a
+							href="https://html5up.net">HTML5 UP</a>.
+					</p>
+				</footer>
 			</div>
+		</div>
+	</div>
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>

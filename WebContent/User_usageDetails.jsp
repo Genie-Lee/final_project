@@ -1,3 +1,4 @@
+<%@page import="com.DataObject.reviewDO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
@@ -52,6 +53,7 @@ String u_id = u_do.getU_id();
                                    
 							memberDAO dao = new memberDAO();
 							ArrayList<UserUsageDO> usage_arr = dao.getUserUsage(u_id);
+							ArrayList<reviewDO> r_arr = dao.get_review(u_id);
 							
 							for(int i=0; i<usage_arr.size(); i++){
 						
@@ -61,7 +63,6 @@ String u_id = u_do.getU_id();
 							
 							
                                  
-                                       <form action="#" method="post">
                                           <ul class="actions">
                                              <li> 배달 일자 : <%=date_arr[0] %> </li>
                                           </ul>
@@ -82,15 +83,25 @@ String u_id = u_do.getU_id();
                                           	<%int order_num = usage_arr.get(i).getOrder_num(); %>
                                              <li>주문번호 : <%=order_num %> </li>
                                           </ul>
-                                          
-                           
-                               <ul class="actions">
+                                    <%
+                                    int review = 0;
+                                    for(int j=0;j<r_arr.size();j++){ %>
+                           				<%if(order_num==Integer.parseInt(r_arr.get(j).getOrder_num())){
+                           					review += 1;
+                           				} %>
+                                    <%} %>
+                                    <%if(review==0){ %>
+                              			 <ul class="actions">
                                           <!--3.href로 리뷰작성 페이지로 연결하기-->
                                              <li><a href="review.jsp?order_num=<%=order_num %>" class="button">리뷰작성</a></li>
-                                            <!--  드라이버 이름으로 확인--> 
-                                          
                                           </ul>  
-                                       </form>   
+                                     <%}else{ %>
+                                     	<ul class="actions">
+                                          <!--3.href로 리뷰작성 페이지로 연결하기-->
+                                             <li><a href="javascript:void(0)" class="button primary">작성완료</a></li>
+                                          </ul>  
+                                     <%} %>
+                                 
                         </article>
                                        <% }; %>
                                                                      
@@ -110,43 +121,55 @@ String u_id = u_do.getU_id();
                </div>
 
             <!-- Sidebar -->
-               <div id="sidebar">
-                  <div class="inner">
-                     <!-- Menu -->
-                        <nav id="menu">
-                           <header class="major">
-                              <h2>Menu</h2>
-                           </header>
-                           <ul>
-                              <li><a href="User_main.jsp">메인</a></li>
-                              <li><a href="User_usageDetails.jsp">이용내역</a></li>
-                              <li><a href="review_user.jsp">내가 작성한 리뷰</a></li>
-                            </ul>
-                        </nav>
-                        
-                     <!-- Section -->
-                        <section>
-                           <header class="major">
-                              <h2>Get in touch</h2>
-                           </header>
-                           <p>문제 발생시 다음 연락처로 연락 바랍니다.</p>
-                           <ul class="contact">
-                              <li class="icon solid fa-envelope"><a href="#">genie141930@gmail.com</a></li>
-                              <li class="icon solid fa-phone">(010) 5091-0984</li>
-                              <li class="icon solid fa-home">광주광역시 북구 용봉동 77<br />
-                              전남대학교 생활관 9A동</li>
-                           </ul>
-                        </section>
+		<div id="sidebar">
+			<div class="inner">
 
-                     <!-- Footer -->
-                        <footer id="footer">
-                           <p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-                        </footer>
+				<!-- Search 검색기능 일단 무시하기로 합니다-->
 
-                  </div>
-               </div>
+				<!-- <section id="search" class="alt">
+									<form method="post" action="#">
+										<input type="text" name="query" id="query" placeholder="Search" />
+									</form>
+								</section> -->
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="User_main.jsp" >메인</a></li>
+						<li><a href="User_usageDetails.jsp" >이용내역</a></li>
+						<li><a href="review_user.jsp">내가 작성한 리뷰</a></li>
 
-         </div>
+					</ul>
+				</nav>
+				<!-- Section -->
+				<section>
+					<header class="major">
+						<h2>Get in touch</h2>
+					</header>
+
+					<p>문제 발생시 다음 연락처로 연락 바랍니다.</p>
+					<ul class="contact">
+						<li class="icon solid fa-envelope"><a href="#">genie141930@gmail.com</a></li>
+						<li class="icon solid fa-phone">(010) 5091-0984</li>
+						<li class="icon solid fa-home">광주광역시 북구 용봉동 77<br /> 전남대학교
+							생활관 9A동
+
+						</li>
+					</ul>
+				</section>
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">
+						&copy; Untitled. All rights reserved. Demo Images: <a
+							href="https://unsplash.com">Unsplash</a>. Design: <a
+							href="https://html5up.net">HTML5 UP</a>.
+					</p>
+				</footer>
+			</div>
+		</div>
+	</div>
 
       <!-- Scripts -->
          <script src="assets/js/jquery.min.js"></script>
