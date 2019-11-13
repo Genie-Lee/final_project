@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.DataAccessObject.*;
-import com.Model.JoinService;
 import com.Model.JoinService_driver;
 import com.Model.JoinService_enter;
 import com.Model.LoginService;
@@ -18,6 +17,7 @@ import com.Model.LoginService_enter;
 import com.Model.LogoutSurvice_driver;
 import com.Model.LogoutSurvice_enter;
 import com.Model.ReviewRegistration;
+import com.Model.order_session;
 
 /**
  * Servlet implementation class front
@@ -65,6 +65,9 @@ public class Front extends HttpServlet {
 		}else if(front.equals("ReviewRegistrationCon.do")) {
 			ReviewRegistration review = new ReviewRegistration();
 			nextpage = review.execute(request, response);
+		}else if(front.equals("random_orderCon.do")) {
+			order_session order = new order_session();
+			nextpage = order.execute(request, response);
 		}
 
     

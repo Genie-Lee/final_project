@@ -29,11 +29,8 @@
 <body class="is-preload">
 
 <%
-   
 userDO u_do = (userDO)session.getAttribute("u_do");
 String u_id = u_do.getU_id();
- 
- 
  %> 
       <!-- Wrapper -->
          <div id="wrapper">

@@ -1,5 +1,9 @@
+<%@page import="com.DataObject.review_viewerDO"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
+<%@page import="com.DataAccessObject.memberDAO"%>
+<%@page import="com.DataObject.userDO"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,10 +48,11 @@ margin-right: auto;}
 
 <!--1.DB에 데이터 가져오기-->
 <%
-	
-	
-	
-	%> 
+userDO u_do = (userDO)session.getAttribute("u_do");
+String u_id = u_do.getU_id();
+memberDAO dao = new memberDAO();
+ArrayList<review_viewerDO> rv_arr = dao.userMyReview(u_id);
+ %> 
 <!-- Wrapper -->
 	<div id="wrapper">
 
@@ -63,18 +68,19 @@ margin-right: auto;}
 									<div class="menu">
 										<article>																												
 		                                      <!--2.for문 사용- 내가 작성한 리뷰 받아와야함-->
+		                                     <%for(int i=0; i<rv_arr.size(); i++){%>
 		                                   	<form action="#" method="post">
 		                                      	<table style="border-collapse: inherit;">
 													<tr style="background-color: transparent; ">
 														<td rowspan="2" width="100" height="120"><!-- 가능하면 사진의 크기와 동일하게 설정-->
-															<%//if(profile==null){ %>
+															<%if(rv_arr.get(i).getPhoto()==null){ %>
 															<!-- DB에서 사진을 받아와 표시, null값 일경우 디폴트 프로필 표시 -->
-																<span class="image"><img src="images/profile.png" width="100" height="120" alt="프로필"></span>
-															<%//}else{%>
-																<!--class="image"><img src=""width="100" height="120" alt="프로필"> 기사님사진 받을 곳 -->
-															<%//}%>
+															<span class="image"><img src="images/profile.png" width="100" height="120" alt="프로필"></span>
+															<%}else{%>
+															<span class="image"><img src="images/<%=rv_arr.get(0).getPhoto() %>"width="100" height="120" alt="프로필"></span>
+															<%}%>
 														</td>
-														<td><% %>기사님</td><!-- 기사님 성함을 받아와 표시할 곳 -->
+														<td><%=rv_arr.get(i).getD_name() %>기사님</td><!-- 기사님 성함을 받아와 표시할 곳 -->
 														<td>
 															<ul class="actions" style="float: right;">
 																<li><a href="#" class="button">수정</a></li>
@@ -83,19 +89,20 @@ margin-right: auto;}
 														</td>
 													</tr>
 													<tr>
-														<td>날짜 <% %></td>
+														<%String date[] = rv_arr.get(i).getR_date().split(" "); %>
+														<td>날짜 <%=date[0]%></td>
 														<td>
 															<div class='star-rating'>
-																<span style="width: 70%"></span>
-																<!-- 추후 스크립틀릿으로 별점 정보 받아올 예정 "width:<% %>%"-->
+																<span style="width: <%=rv_arr.get(i).getStar_rate() %>%"></span>
 															</div>
 														</td>
 													</tr>								
 												</table>
 												<div style="border: 2px solid #f56a6a; background-color:transparent; padding:20px; border-radius: 0.375em; text-align:center">
-													<% %>리뷰 받아서 표시 예정
+													<%=rv_arr.get(i).getPost() %>
 												</div>												
-											</form>								
+											</form>	
+											<%} %>							
 										</article>
 									</div>
 								</section>

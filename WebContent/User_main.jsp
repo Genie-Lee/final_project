@@ -1,3 +1,4 @@
+<%@page import="com.DataObject.orderDO"%>
 <%@page import="com.DataObject.enterpriseDO"%>
 <%@page import="com.DataObject.driverDO"%>
 <%@page import="com.DataObject.userDO"%>
@@ -36,6 +37,12 @@ table, tr, th, td{vertical-align: bottom;}
 	line-height: 0;
 	vertical-align: top;
 }
+
+
+.layer{position:absolute;top:0;left:0;width:100%;height:100%;text-align:center;top: 100px;}
+.layer .content{display:inline-block;vertical-align:middle}
+.layer .blank{display:inline-block;width:0;height:100%;vertical-align:middle}
+
 </style>
 
 </head>
@@ -46,46 +53,55 @@ table, tr, th, td{vertical-align: bottom;}
 
 userDO u_do = (userDO)session.getAttribute("u_do");
 String u_id = u_do.getU_id();
-driverDO d_do = (driverDO)session.getAttribute("d_do");
-enterpriseDO e_do = (enterpriseDO)session.getAttribute("e_do");
+orderDO o_do = (orderDO)session.getAttribute("o_do");
 
-int b_num = 5;   //교촌치킨을 받아왔다고 가정
-
+if(o_do==null){ %>
+<div class="layer">
+	<span class="content">
+		<img src="images/main_user.png" width="auto" height="200px" alt="메인사진">
+	<span class="blank"></span>
+	</span>
+</div>
+<div class="layer">
+	<span class="content">
+		<a href="random_orderCon.do?u_id=<%=u_id %>" class="button primary"  style="text-align:center; line-height: 100px; width:300px; height:100px; font-family:none; font-size: 2em;">주문하기</a>
+	</span>
+	<span class="blank"></span>
+</div>
+<%}else{
+int b_num = o_do.getB_num();
 String bname =memberDAO.getBusiness(b_num); 
 
-String orderName = memberDAO.getDriver(u_id , b_num); 
+driverDO d_do = memberDAO.getDriver(u_id , b_num); 
 
-String arr[] = orderName.split("&"); 
 
-int star_avg = memberDAO.getStar(arr[0]); 
-
-/* 
+/* int star_avg = memberDAO.getStar(d_do.getD_id());   */
+/*
 System.out.println(arr[0]);
 System.out.println(arr[1]);
 System.out.println(arr[2]);
  */
 
-
-    %>
+%>
 
 	<!-- Wrapper -->
 	<div id="wrapper">
-
+	
 		<!-- Main -->
 		<div id="main">
 			<div class="inner">
-
+				
 				<!-- Header -->
 				<header id="header">
-
+					
 					<a class="logo"><strong>점포명 : <%=bname%></strong></a>
-					<!-- 점표명 받아서 표시할 부분 -->
 					
 				</header>
 
 				<!-- Banner -->
 				<section id="banner">
 					<div class="content">
+					
 						<header>
 							<table style="border-collapse: inherit;">
 								<tr style="background-color: transparent; font-size: 20px; padding: 5em 0 1em 0;">
@@ -226,7 +242,7 @@ registration.showNotification(title, options);
 
 						<a href="review_another_user.jsp" style="color:black; font-size:20px">
 							
-							<%= arr[1]%> 기사님
+							<%=d_do.getD_name()%> 기사님
 						</a>
 						<!-- 기사님 성함을 받아와 표시할 곳 -->
 					</header>
@@ -235,17 +251,17 @@ registration.showNotification(title, options);
 							<table style="border-collapse: inherit; color:black;">
 								<tr style="background-color: transparent; ">
 									<td rowspan="2" width="100" height="120"><!-- 가능하면 사진의 크기와 동일하게 설정-->
-										<%//if(profile==null){ %>
-											<!-- DB에서 사진을 받아와 표시, null값 일경우 디폴트 프로필 표시 -->
-											<span class="image"><img src="images/profile.png" width="100" height="120" alt="프로필"></span>
-										<%//}else{%>
-											<!--class="image"><img src=""width="100" height="120" alt="프로필"> 기사님사진 받을 곳 -->
-										<%//}%>
+										<%if(d_do.getPhoto()==null){ %>
+										<!-- DB에서 사진을 받아와 표시, null값 일경우 디폴트 프로필 표시 -->
+										<span class="image"><img src="images/profile.png" width="100" height="120" alt="프로필"></span>
+										<%}else{%>
+										<span class="image"><img src="images/<%=d_do.getPhoto() %>"width="100" height="120" alt="프로필"></span>
+										<%}%>
 									</td>
-									<td>소속 : <%= arr[3]%></td><!-- 기사님 소속을 받아와 표시할 곳 -->
+									<td>소속 : <%=d_do.getE_id()%></td><!-- DO에 이름값이 없지만 아이디와 같이 String이기 때문에 입력함 -->
 								</tr>
 								<tr>
-									<td>연락처 : <%= arr[2] %></td>
+									<td>연락처 : <%=d_do.getD_num() %></td>
 								</tr>
 								<tr style="background-color: transparent; ">
 									<td colspan="2">
@@ -253,8 +269,8 @@ registration.showNotification(title, options);
 											평균점수
 											<br>
 											<div class='star-rating'>
-											<% System.out.println(star_avg); %>
-												<span style="width: <%=star_avg%>%"></span>
+											<%// System.out.println(star_avg); %>
+												<span style="width: <%//star_avg%>%"></span>
 												<!-- 추후 스크립틀릿으로 별점 정보 받아올 예정 "width:%"-->
 											</div>
 										</div>
@@ -267,6 +283,7 @@ registration.showNotification(title, options);
 				</section>
 			</div>
 		</div>
+<%} %>
 		<!-- Sidebar -->
 		<div id="sidebar">
 			<div class="inner">

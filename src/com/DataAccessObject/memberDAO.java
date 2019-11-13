@@ -2,13 +2,15 @@ package com.DataAccessObject;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.websocket.Session;
 
 import com.DataObject.UserUsageDO;
 import com.DataObject.driverDO;
 import com.DataObject.enter_main_viewerDO;
-import com.DataObject.reviewDO; 
+import com.DataObject.reviewDO;
+import com.DataObject.review_viewerDO;
 import com.DataObject.enterpriseDO;
 import com.DataObject.orderDO;
 import com.DataObject.userDO; 
@@ -28,7 +30,7 @@ public class memberDAO {
 		try {
 		   Class.forName("oracle.jdbc.driver.OracleDriver"); 
 			      
-			 String driver = "jdbc:oracle:thin:@221.156.35.218:1521:xe";
+			 String driver = "jdbc:oracle:thin:@221.156.35.243:1521:xe";
 			      String userid = "project"; 
 			      String userpwd = "gozldshsh";
 			
@@ -77,14 +79,14 @@ public class memberDAO {
 	
 	
 	//드라이버 정보를 가져온다 
-	public static String getDriver(String u_id , int b_num) {
-		String answer = ""; 
+	public static driverDO getDriver(String u_id , int b_num) {
+		driverDO d_do = null; 
 
-try {
+		try {
 			
 			getConnection();
 			
-			String sql =  "select * from driver where d_id = (select d_id from order_t where u_id = ? and b_num=?)";
+			String sql =  "select d.d_id, d.d_pw, d.d_name, d.d_p_number, e.e_name, d.photo from (select * from driver where d_id = (select d_id from order_t where u_id = ? and b_num=?)) d, enterprise e where d.e_id = e.e_id";
 			
 			PreparedStatement psmt = conn.prepareStatement(sql); 
 			psmt.setString(1, u_id);
@@ -94,17 +96,20 @@ try {
 			
 			if(rs.next()) {
 				
-				answer = rs.getString(1) + "&"; 
-				answer = answer + rs.getString(3) + "&";
-				answer = answer + rs.getString(4) + "&";   //별점은 나중에 .
-			    answer = answer + rs.getString(5); 
-				System.out.println(answer);
+				String d_id = rs.getString(1); 
+				String d_name = rs.getString(3);
+				String d_num = rs.getString(4);   //별점은 나중에 .
+			    String e_id = rs.getString(5);  //
+			    String photo = rs.getString(6); 
 				
+				d_do = new driverDO(d_id, null, d_name, d_num, e_id, photo);			
+							
 			}
-		} catch(Exception e) {
+			
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-return answer; 
+		return d_do;
 		
 		
 	}
@@ -178,6 +183,76 @@ return answer;
 			e.printStackTrace();
 		}
 		return usage_arr;
+	}
+	
+	public int get_order_num(String user_id) {
+		int order_num = 0;
+		System.out.println(user_id);
+		orderDO o_do = null;
+		ArrayList<orderDO> arr = new ArrayList<>();
+		try {
+			getConnection();
+			
+			String sql="select order_num from order_t where u_id = ?";
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			
+			psmt.setString(1, user_id);
+			
+			ResultSet rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				int order_num1 = rs.getInt(1);
+				
+
+				System.out.println(order_num1);
+				o_do = new orderDO(order_num1, null, null, 0, null, 0, null);
+				arr.add(o_do);
+				
+			}
+		Random ran = new Random();
+		int size = arr.size();
+		order_num += arr.get(ran.nextInt(size)).getOrder_num();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return order_num;
+	}
+	
+	public orderDO get_order(String user_id) {
+		orderDO o_do = null;
+		
+		String get_order_num = String.valueOf(get_order_num(user_id));
+		System.out.println("주문번호"+get_order_num);
+		try {
+			getConnection();
+			
+			String sql="select * from order_t where order_num = ?";
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			
+			psmt.setString(1, get_order_num);
+			
+			ResultSet rs = psmt.executeQuery();
+
+			if(rs.next()) {
+				//if : 검색한 데이터가 하나일 경우
+				//while : 검색한 데이터가 여러개 일경우
+				int order_num = rs.getInt(1);
+				String u_id = rs.getString(2);
+				String d_id = rs.getString(3);
+				int b_num = rs.getInt(4);
+				String destination = rs.getString(5);
+				int estimated_time = rs.getInt(6);
+				String date = rs.getString(7);
+				
+				o_do = new orderDO(order_num, d_id, u_id, b_num, destination, estimated_time, date);
+			
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return o_do;
 	}
 	
 	public userDO Login(String u_id, String u_pw) {
@@ -525,9 +600,6 @@ return answer;
 		return u_u_arr;
 	}
 	
-	
-
-
 	public String get_u_id(String order_num) { // u_id 가져오기
 		String answer = ""; 
 		System.out.println("아이디 긁어올 번호 : "+order_num);
@@ -583,44 +655,107 @@ return answer;
 		return cnt;
 	} 
 
+	public ArrayList<review_viewerDO> userMyReview(String u_id) {
+		review_viewerDO rv_do = null;
+		ArrayList<review_viewerDO> rv_arr = new ArrayList<>();
+		try {
 	
-	// 보류 합니다.
+		getConnection();
 	
-public ArrayList<reviewDO> userMyReview() {
-	reviewDO vo = null;
-	ArrayList<reviewDO> arr = new ArrayList<>();
-	try {
-
-	getConnection();
-
-	String sql = "select * from REVIEW where u_id=?";
-	//"select D_NAME,PHOTO from ORDER_T where ORDER_NUM=?";
-	
-	psmt = conn.prepareStatement(sql);
-	
-	ResultSet rs = psmt.executeQuery();
-	
-	
-	
-	while(rs.next()) {
-			String post_num = rs.getString("POST_NUM");
-			String photo = rs.getString("PHOTO");
-			String d_name = rs.getString("D_NAME");
-			String r_date = rs.getString("R_DATE");
-			String post = rs.getString("POST");
+		String sql = "select d_name, photo, r_date, star_rate, post from (select r.u_id, d.d_name, d.photo, r.r_date, r.star_rate, r.post from review r, (select d.d_name, d.photo, o.order_num from order_t o, driver d where o.d_id = d.d_id)d where r.order_num = d.order_num) where u_id = ? order by r_date desc";
+		//"select D_NAME,PHOTO from ORDER_T where ORDER_NUM=?";
+		
+		PreparedStatement psmt = conn.prepareStatement(sql); 
+		psmt.setString(1, u_id);
+		
+		ResultSet rs = psmt.executeQuery(); 
+		
+		while(rs.next()) {
 			
-		//	vo = new reviewDO(post_num, photo, d_name, r_date, post);
-			//DO는 어떻게?
-			arr.add(vo);
+			String d_name = rs.getString(1);
+			String photo = rs.getString(2);
+			String r_date = rs.getString(3);
+			String star_rate = rs.getString(4);
+			String post = rs.getString(5);
 			
+			rv_do = new review_viewerDO(d_name, photo, r_date, star_rate, post);
+			rv_arr.add(rv_do);
+					
+		}
+		
+		}catch (Exception e) {
+	
+		}
+		return rv_arr;
+	}
+
+	public ArrayList<review_viewerDO> another_user_review(String d_id, int page) {
+		
+		System.out.println("드라이버 아이디"+d_id);
+		review_viewerDO rv_do = null;
+		ArrayList<review_viewerDO> rv_arr = new ArrayList<>();
+		
+		page*=10;
+		
+		try {
+	
+		getConnection();
+	
+		String sql = "select r.d_name, r.photo, r.r_date, r.star_rate, r.post from (select rownum as rnum, r.d_name, r.photo, r.r_date, r.star_rate, r.post from (select d.d_name, d.photo, r.r_date, r.star_rate, r.post, r.post_num from review r, (select d.d_id, d.photo, d.d_name, o.u_id from driver d, (select d_id, u_id from order_t where order_num in (select order_num from review where d_id = ?)) o where d.d_id = o.d_id) d where r.u_id = d.u_id order by r_date desc) r where rownum <=?) r where r.rnum >= ?";
+		//"select D_NAME,PHOTO from ORDER_T where ORDER_NUM=?";
+		
+		PreparedStatement psmt = conn.prepareStatement(sql); 
+		psmt.setString(1, d_id);
+		psmt.setInt(2, page);
+		psmt.setInt(3, (page-9));
+		
+		ResultSet rs = psmt.executeQuery(); 
+		
+		while(rs.next()) {
+			
+			String d_name = rs.getString(1);
+			String photo = rs.getString(2);
+			String r_date = rs.getString(3);
+			String star_rate = rs.getString(4);
+			String post = rs.getString(5);
+			
+			rv_do = new review_viewerDO(d_name, photo, r_date, star_rate, post);
+			rv_arr.add(rv_do);
+					
+		}
+		
+		}catch (Exception e) {
+	
+		}
+		return rv_arr;
+	}
+
+	
+	
+	
+	public int page_count(String d_id) { // 보류
+		int totalCount = 0;
+		try {
+			
+			getConnection();
+			
+			String sql =  "select count(*) as totalCount from (select d.d_name, d.photo, r.r_date, r.star_rate, r.post from review r, (select d.d_id, d.photo, d.d_name, o.u_id from driver d, (select d_id, u_id from order_t where order_num in (select order_num from review where d_id = ?)) o where d.d_id = o.d_id) d where r.u_id = d.u_id) ";
+			
+			PreparedStatement psmt = conn.prepareStatement(sql); 
+			psmt.setString(1, d_id);
+			
+			ResultSet rs = psmt.executeQuery(); 
+			
+			if(rs.next()) {	
+			totalCount = rs.getInt(1); 	
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return totalCount; 
 	}
 	
-	}catch (Exception e) {
-
-	}
-	return arr;
-}
-
 public ArrayList<driverDO> driverManagement() {
 	driverDO vo = null;
 	ArrayList<driverDO> arr = new ArrayList<>();
