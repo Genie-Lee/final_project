@@ -82,10 +82,10 @@ ArrayList<review_viewerDO> rv_arr = dao.userMyReview(u_id);
 														</td>
 														<td><%=rv_arr.get(i).getD_name() %>기사님</td><!-- 기사님 성함을 받아와 표시할 곳 -->
 														<td>
-															<ul class="actions" style="float: right;">
+															<!-- <ul class="actions" style="float: right;">
 																<li><a href="#" class="button">수정</a></li>
 																<li><a href="#" class="button">삭제</a></li>
-															</ul>
+															</ul> -->
 														</td>
 													</tr>
 													<tr>

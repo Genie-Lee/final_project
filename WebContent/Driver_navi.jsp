@@ -54,7 +54,7 @@ String gps = request.getParameter("gps");
 System.out.println(gps);
 
 driverDO d_do = (driverDO)session.getAttribute("d_do");
-
+enterpriseDO e_do = (enterpriseDO)session.getAttribute("e_do"); 
 
 
 
@@ -248,9 +248,14 @@ document.getElementById('getMeter').innerHTML = '남은 거리:' + c + 'm';
 					</header>
 					<ul>
 
-						<li><a href="index.jsp">메인</a></li>
+
+						<li><a href="DriverMain.jsp">메인</a></li>
+						<%if((d_do==null)&&(e_do==null)){ %>
+						<li><a href="login.jsp">로그인</a></li>
+						<%}else{%>
+						<li><a href="logoutCon_driver.do">로그아웃</a></li>
+						<%} %>
 						<li><a href="Driver_navi.jsp">위치 확인</a></li>
-						<li><a href="review_user.jsp">나의 리뷰</a></li>
 						
 						
 						<!-- 환경설정 구현 안함-->

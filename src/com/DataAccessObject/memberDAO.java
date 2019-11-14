@@ -30,7 +30,7 @@ public class memberDAO {
 		try {
 		   Class.forName("oracle.jdbc.driver.OracleDriver"); 
 			      
-			 String driver = "jdbc:oracle:thin:@221.156.35.243:1521:xe";
+			 String driver = "jdbc:oracle:thin:@10.10.46.255:1521:xe";
 			      String userid = "project"; 
 			      String userpwd = "gozldshsh";
 			
@@ -463,6 +463,33 @@ return answer;
 		return cnt;
 	}
 
+	public String d_main_get_e_name(String e_id) {
+		String e_name = "";
+		
+		try {
+			getConnection();
+			
+			String sql = "select e_name from enterprise where e_id = ?";
+			//텍스트 마이닝 정보 없음
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			
+			psmt.setString(1, e_id);
+			
+			ResultSet rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				e_name = rs.getString(1);
+				
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return e_name;
+	}
+	
 	public int Join_enter(enterpriseDO e_do) {
 		try {
 			getConnection();
@@ -571,7 +598,7 @@ return answer;
 		try {
 			getConnection();
 			
-			String sql = "select star_rate, post from review where order_num in (select order_num from order_t where d_id = ?)";
+			String sql = "select star_rate, post from (select rownum rnum, star_rate, post from (select star_rate, post, order_num from review where order_num in (select order_num from order_t where d_id = ?) order by order_num desc) where rownum <=20) where rnum >= 1";
 			//텍스트 마이닝 정보 없음
 			PreparedStatement psmt = conn.prepareStatement(sql);
 			
@@ -666,13 +693,13 @@ return answer;
 			
 			getConnection();
 
-			String sql = "insert into review values (review_seq.nextval, ?, ?, ?, ?, sysdate)";
+			String sql = "insert into review values (review_seq.nextval, ?, ?, ?, ?, sysdate, null)";
 
 			
 			psmt = conn.prepareStatement(sql);
 		
 			psmt.setString(1, u_id);
-			psmt.setString(2, r_do.getOrder_num());
+			psmt.setString(2, order_num);
 			psmt.setString(3, r_do.getStar_rate());
 			psmt.setString(4, r_do.getPost());
 			

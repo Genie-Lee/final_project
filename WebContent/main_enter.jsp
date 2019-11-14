@@ -167,14 +167,12 @@ table, tr, th, td{vertical-align: bottom;}
 										<h2>Menu</h2>
 									</header>
 									<ul>
-										<li><a href="index.html">메인</a></li>
+										<li><a href="main_enter.jsp">메인</a></li>
 										<%if((d_do==null)&&(e_do==null)){ %>
 										<li><a href="index.jsp">로그인</a></li>
 										<%}else{%>
 										<li><a href="logoutCon_enter.do">로그아웃</a></li>
 										<%} %>
-										<li><a href="#">회원가입</a></li><!-- 회원가입페이지 구현예정-->
-										<li><a href="#">이용내역</a></li><!-- 이용내역 구현예정 -->
 										<!-- <li>
 									</ul>
 								</nav>

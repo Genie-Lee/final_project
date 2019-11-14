@@ -26,7 +26,7 @@ public class JoinService_driver implements Command {
 		
 		try { 
 
-		String saveDirectory = "C:\\Users\\user\\Desktop\\workspace\\final_project\\WebContent\\images";
+		String saveDirectory = "C:\\Users\\Genie\\Desktop\\workspace\\final_project\\WebContent\\images";
 		int maxPostSize = 10*1024*1024;
 		String encoding = "utf-8";
 		MultipartRequest multi = new MultipartRequest(

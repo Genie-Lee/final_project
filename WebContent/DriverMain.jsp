@@ -52,9 +52,10 @@
 	<%	
 	driverDO d_do = (driverDO)session.getAttribute("d_do");
 	enterpriseDO e_do = (enterpriseDO)session.getAttribute("e_do"); 
-	
+	memberDAO dao = new memberDAO();
+	String e_name = dao.d_main_get_e_name(d_do.getE_id());
 
-    int star_avg = memberDAO.getStar(d_do.getD_id()); 
+    int star_avg = dao.getStar(d_do.getD_id()); 
 	
 	%>
 		<!-- Wrapper -->
@@ -83,7 +84,7 @@
 									
 								</section>
 
-	                                <p>소속 :<%=d_do.getE_id()%>  </p>
+	                                <p>소속 :<%=e_name%>  </p>
 								
 								
 								<div class="wrap-star" style="color:black;">
@@ -99,8 +100,8 @@
 
 														<ul class="actions">
 														<!--href로 매출페이지와 리뷰페이지를 연결-->
-															<li><a href="Driver_navi.jsp"><input type="button" value="배달출발"></a> </li><!--평가 페이지 -->
-															<li><a href="review_drivers_view.jsp"><input type="button" value="리뷰"></a> </li><!--리뷰 페이지 -->
+															<li><a href="Driver_navi.jsp" class="button">배달출발</a> </li><!--평가 페이지 -->
+															<li><a href="review_drivers_view.jsp" class="button">리뷰</a> </li><!--리뷰 페이지 -->
 														</ul>	
 										
 														</form>		

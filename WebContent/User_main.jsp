@@ -74,8 +74,7 @@ String bname =memberDAO.getBusiness(b_num);
 
 driverDO d_do = memberDAO.getDriver(u_id , b_num); 
 
-
-/* int star_avg = memberDAO.getStar(d_do.getD_id());   */
+int star_avg = memberDAO.getStar(d_do.getD_id());
 /*
 System.out.println(arr[0]);
 System.out.println(arr[1]);
@@ -269,8 +268,8 @@ registration.showNotification(title, options);
 											평균점수
 											<br>
 											<div class='star-rating'>
-											<%// System.out.println(star_avg); %>
-												<span style="width: <%//star_avg%>%"></span>
+											<% System.out.println(star_avg); %>
+												<span style="width: <%=star_avg%>%"></span>
 												<!-- 추후 스크립틀릿으로 별점 정보 받아올 예정 "width:%"-->
 											</div>
 										</div>
